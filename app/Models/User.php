@@ -29,6 +29,7 @@ class User extends Authenticatable
         'order_history',
         'cart',
         'wishlist',
+        'last_login_at',
         'created_at',
         'updated_at',
     ];
@@ -52,5 +53,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+    ];
+
+    //is admin
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    //user orders
+    public function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    protected $dates = [
+        'last_login_at',
     ];
 }

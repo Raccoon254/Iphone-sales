@@ -1,17 +1,62 @@
 <div class="card w-full rounded bg-base-100 shadow-sm">
-    <figure class="h-44 bg-cover img-container">
-        <img class="base-img" src="https://airjordanofficial.us.com/wp-content/uploads/2023/06/18529497_40160162_2048-768x768.jpg" alt="Shoes" />
-        <img class="hover-img" src="https://airjordanofficial.us.com/wp-content/uploads/2023/06/18529497_40160164_2048-768x768.jpg" alt="Shoes Hover" />
+    <a href="{{ route('products.show', $product->id) }}">
+    <figure class="h-44 bg-cover relative img-container">
+        <img class="base-img" src="{{ asset('images/' . (isset($product->images[0]) ? $product->images[0]->image_path : $product->images[1]->image_path)) }}" alt="Shoes" />
+        <img class="hover-img" src="{{ asset('images/' . (isset($product->images[1]) ? $product->images[1]->image_path : $product->images[0]->image_path)) }}" alt="Shoes Hover" />
+
+        <section class="absolute z-20 top-[7%] right-[60%]">
+            <!-- Discount badge -->
+                <div class="badge overflow-clip whitespace-nowrap text-ellipsis text-[10px] sm:text-xs badge-warning">
+                    {{ (int) $product->discount_percentage ?? 0 }}% OFF
+                </div>
+        </section>
     </figure>
-    <div class="card-body">
-        <h2 class="">
-            AIR JORDAN 6 RETRO “Red Oreo”
-            <span class="badge badge-secondary">NEW</span>
-        </h2>
-        <p>If a dog chews shoes whose shoes does he choose?</p>
-        <div class="card-actions justify-end">
-            <div class="badge badge-outline">Fashion</div>
-            <div class="badge badge-outline">Products</div>
+        </a>
+    <div class="card-body flex flex-col gap-3 sm:p-6 p-3">
+
+        <section class="flex gap-2 items-center">
+
+            <h1 class="whitespace-nowrap overflow-clip font-semibold w-9/12 text-ellipsis">
+                {{ $product->name }}
+            </h1>
+
+            <!-- use carbon to check if product is new -->
+            @if ($product->created_at->diffInDays(Carbon\Carbon::now()) < 1)
+                <span class="badge badge-secondary text-xs">NEW</span>
+            @endif
+        </section>
+
+        <div class="card-actions flex items-center justify-between text-sm">
+
+            <!-- discount -->
+            <section class="flex gap-2">
+                <div class="text-gray-500 text-opacity-40 line-through">
+                    <!-- calculate discount -->
+                    @if ($product->discount_percentage)
+                        {{ (int) $product->price + ((int) $product->price * ((int) $product->discount_percentage / 100)) }}
+                    @endif
+                </div>
+
+                <div class="">
+                    {{ (int) $product->price }}
+                </div>
+
+                <div class="">
+                    {{ env('CURRENCY') }}
+                </div>
+            </section>
+
+            <section class="flex">
+                <div wire:key="add-to-cart-{{ $product->id }}">
+                    @livewire('add-to-cart', ['product' => $product], key($product->id))
+                </div>
+            </section>
+
         </div>
+
+        <div class="badge overflow-clip whitespace-nowrap text-[10px] text-ellipsis badge-outline">
+            {{ $product->category->name }}
+        </div>
+
     </div>
 </div>

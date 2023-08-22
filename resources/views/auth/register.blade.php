@@ -4,16 +4,19 @@
 
         <!-- First Name & Last Name -->
         <div class="flex justify-between">
+
             <div>
                 <x-input-label for="firstName" :value="__('First Name')" />
                 <x-text-input id="firstName" class="block mt-1" type="text" name="firstName" :value="old('firstName')" required autofocus autocomplete="first name" />
                 <x-input-error :messages="$errors->get('firstName')" class="mt-2" />
             </div>
+
             <div>
                 <x-input-label for="lastName" :value="__('Last Name')" />
                 <x-text-input id="lastName" class="block mt-1" type="text" name="lastName" :value="old('lastName')" required autofocus autocomplete="last name" />
                 <x-input-error :messages="$errors->get('lastName')" class="mt-2" />
             </div>
+
         </div>
 
 
@@ -28,7 +31,7 @@
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="email" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
