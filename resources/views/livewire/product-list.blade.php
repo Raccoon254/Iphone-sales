@@ -5,13 +5,21 @@
 
     <div class="container mx-3">
 
-        <section class="Raccoon Search m-3 w-full flex justify-end">
+        <section class="Raccoon Search m-3 w-full flex items-center justify-end">
+
+            <span class="tooltip" data-tip="Create new product">
+                <a class="btn btn-sm btn-circle ring" href="{{ route('products.create') }}">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+            </span>
+
             <div class="w-full sm:w-1/4 mx-4">
                 <label class="relative">
                     <input class="input input-bordered h-10 w-full max-w-xs" wire:model="search" type="text" placeholder="Search any text...">
                     <span class="absolute top-[-10px] right-1 text-[10px] text-gray-500">Powered by Raccoon</span>
                 </label>
             </div>
+
         </section>
         <!--Check if there are any messages within the session-->
         @if(session('success'))

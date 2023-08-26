@@ -10,12 +10,12 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class AddToCart extends Component
 {
-    public $product;
-    public $isAddingToCart = false;
+    public Product $product;
+    public bool $isAddingToCart = false;
     /**
      * @var mixed|string
      */
-    public $extraClass;
+    public mixed $extraClass;
 
     public function mount(Product $product, $extraClass = ''): void
     {

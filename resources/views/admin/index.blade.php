@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin.index>
     <div class="flex">
         <section class="z-50">
             @include('admin.sidebar')
@@ -76,4 +76,4 @@
 
         setInterval(updateTime, 1000); // update every second
     </script>
-</x-app-layout>
+</x-admin.index>

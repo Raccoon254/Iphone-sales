@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin.index>
     <div class="container mx-auto p-6">
         <h1 class="text-3xl mb-6">Edit Category</h1>
 
@@ -21,4 +21,4 @@
             </div>
         </form>
     </div>
-</x-app-layout>
+</x-admin.index>

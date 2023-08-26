@@ -3,7 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -61,12 +63,51 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
+    public function unreadNotificationCount(): int
+    {
+        $unreadCount = 0;
+
+        // Loop through each notification associated with the user
+        $notifications = $this->allNotifications();
+        foreach ($notifications as $notification) {
+            if (!$notification->isReadByUser($this->id)) {
+                $unreadCount++;
+            }
+        }
+
+        return $unreadCount;
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
     //user orders
-    public function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }
 
+    public function unreadNotifications(): \Illuminate\Database\Eloquent\Collection
+    {
+        return Notification::unreadForUser($this->id)->get();
+    }
+
+    public function readNotifications(): \Illuminate\Database\Eloquent\Collection
+    {
+        return Notification::readForUser($this->id)->get();
+    }
+
+    public function allNotifications(): \Illuminate\Database\Eloquent\Collection
+    {
+        return Notification::allForUser($this->id)->get();
+    }
+
+    //get unread notifications
+    public function getUnreadNotificationsAttribute(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->unreadNotifications();
+    }
     protected $dates = [
         'last_login_at',
     ];

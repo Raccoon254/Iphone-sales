@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin.index>
     <div class="container mx-auto p-6">
         <h1 class="text-3xl mb-6">{{ $category->name }}</h1>
         <p>{{ $category->description }}</p>
@@ -9,4 +9,4 @@
             </a>
         </div>
     </div>
-</x-app-layout>
+</x-admin.index>

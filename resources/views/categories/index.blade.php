@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin.index>
     <div class="container flex w-full">
 
         <section class="z-50">
@@ -60,4 +60,4 @@
            @endforeach
        </div>
     </div>
-</x-app-layout>
+</x-admin.index>

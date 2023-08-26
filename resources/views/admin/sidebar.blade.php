@@ -18,7 +18,7 @@
                 Products
             </a>
 
-            <a class="sidebar-item">
+            <a class="sidebar-item" href="{{ route('admin-orders') }}">
                 <i class="fa-solid fa-bag-shopping"></i>
                 Orders
             </a>
@@ -35,7 +35,7 @@
                 Categories
             </a>
 
-            <a class="sidebar-item">
+            <a class="sidebar-item" href="{{ route('notifications.index') }}">
                 <i class="fa-solid fa-bell"></i>
                 Notifications
             </a>
