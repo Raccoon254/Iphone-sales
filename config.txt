@@ -1,0 +1,23 @@
+email=>admin@iphones.com
+password=>@Random254
+
+SANDBOX
+Sandbox URL=>https://sandbox.paypal.com
+Email=>sb-nmvyd27654519@personal.example.com
+Password=>Adm@8*g2
+Name=>Test Raccoon
+Phone=>2542981770
+
+-----------------
+Business
+-----------------
+Email=>sb-nptjc26633377@business.example.com
+Password=>56qj&p.M
+Name=>Biz Raccoon
+
+
+Client ID=>ARKNcXP4gz_AOK3o4jJECM3nNxdJBcOEg0jAsRnZ
+sjNBVaQnj1owJyRkZgHdwZ9YGDEzKO_ogVpBM1yH
+
+Secret key 1=>EHCc89U_U5O_NcrtD2etBwnApBcMrh60WQtIF-Xl
+aUgOMvCEa9ESJb33w70ih5yofkpIhjMr4-vyf-fG

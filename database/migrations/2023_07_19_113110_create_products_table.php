@@ -23,6 +23,7 @@ class CreateProductsTable extends Migration
             $table->string('brand');
             $table->unsignedBigInteger('category_id');
             $table->integer('stock');
+            $table->decimal('discount_percentage', 5, 2)->default(0);
             $table->timestamps();
 
             $table->foreign('category_id')

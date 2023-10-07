@@ -5,6 +5,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WiseController;
@@ -21,6 +22,14 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('test', function () {
+    return view('tests.index');
+});
+
+Route::post('pay', [PaypalController::class, 'payment'])->name('paypal.payment');
+Route::get('success', [PaypalController::class, 'success'])->name('paypal.success');
+Route::get('cancel', [PaypalController::class, 'cancel'])->name('paypal.cancel');
 
 Route::get('/', [ProductController::class, 'home'])->name('home');
 
