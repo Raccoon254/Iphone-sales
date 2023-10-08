@@ -46,6 +46,12 @@ class PaypalController extends Controller
             ]
         ]);
 
+        //clear cart
+        $cart = session()->get('cart');
+        if(isset($cart)) {
+            session()->forget('cart');
+        }
+
         if(isset($response['id']) && $response['id'] != '' && $response['status'] == 'CREATED') {
             foreach($response['links'] as $link) {
                 if($link['rel'] == 'approve') {
