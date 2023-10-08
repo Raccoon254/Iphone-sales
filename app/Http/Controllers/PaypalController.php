@@ -19,7 +19,7 @@ class PaypalController extends Controller
      * @throws Exception
      * @throws Throwable
      */
-    public function payment(Request $request)
+    public function payment(Request $request): RedirectResponse|Redirector
     {
         $order = Order::findOrFail($request->order_id);
 
@@ -64,12 +64,7 @@ class PaypalController extends Controller
      */
     public function success(Request $request): View
     {
-        $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
-        $provider->setCurrency('USD');
-        $provider->getAccessToken();
-
-        $response = $provider->capturePaymentOrder($request->token);
+        $response = $this->getResponse($request);
 
         if (isset($response['error']) && $response['error']['name'] === 'UNPROCESSABLE_ENTITY' && $response['error']['details'][0]['issue'] === 'ORDER_ALREADY_CAPTURED') {
             // Handle the specific case where the order has already been captured
@@ -80,6 +75,7 @@ class PaypalController extends Controller
             // Handle other generic errors
             return view('payments.cancel')->with('error', 'Payment processing encountered an error. Please try again.');
         }
+
         $orderAmount = $response['purchase_units'][0]['payments']['captures'][0]['amount']['value'];
 
         // Fetch the latest order of the logged-in user with the exact grand total
@@ -104,7 +100,6 @@ class PaypalController extends Controller
             // Update order's payment status
             $order->update(['payment_status' => 'completed']);
 
-
             //clear cart
             $cart = session()->get('cart');
             if(isset($cart)) {
@@ -123,12 +118,8 @@ class PaypalController extends Controller
      */
     public function cancel(Request $request): View
     {
-        $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
-        $provider->setCurrency('USD');
-        $provider->getAccessToken();
 
-        $response = $provider->capturePaymentOrder($request->token);
+        $response = $this->getResponse($request);
 
         if (isset($response['error']) && $response['error']['name'] === 'UNPROCESSABLE_ENTITY' && $response['error']['details'][0]['issue'] === 'ORDER_ALREADY_CAPTURED') {
             // Handle the specific case where the order has already been captured
@@ -160,6 +151,19 @@ class PaypalController extends Controller
         $order->update(['payment_status' => 'cancelled']);
 
         return view('payments.cancel')->with('error', 'Payment cancelled.');
+    }
+
+    /**
+     * @throws Throwable
+     */
+    function getResponse(Request $request): array
+    {
+        $provider = new PayPalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $provider->setCurrency('USD');
+        $provider->getAccessToken();
+
+        return $provider->capturePaymentOrder($request->token);
     }
 
 
