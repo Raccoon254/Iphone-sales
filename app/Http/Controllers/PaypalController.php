@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\Payment;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Throwable;
 
@@ -55,7 +58,7 @@ class PaypalController extends Controller
      * @throws Exception
      * @throws Throwable
      */
-    public function success(Request $request)
+    public function success(Request $request): View
     {
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
@@ -64,10 +67,28 @@ class PaypalController extends Controller
 
         $response = $provider->capturePaymentOrder($request->token);
 
-        if(isset($response['status']) && $response['status'] == 'COMPLETED') {
-            return redirect()->route('paypal.success')->with('success', 'Payment successful.');
-        }else {
-            return redirect()->route('paypal.cancel')->with('error', 'Something went wrong. Please try again later.');
+        //last order made by user
+        $order = Order::where('user_id', auth()->user()->id)->latest()->first();
+        $amount = $order->grand_total;
+
+        if (isset($response['status']) && $response['status'] == 'COMPLETED') {
+            // Create a payment record
+            Payment::create([
+                'user_id' => auth()->user()->id,
+                'order_id' => $order->id, // Assuming you have the order info available.
+                'transaction_id' => $response['id'],
+                'amount' => $amount,
+                'currency' => 'USD',
+                'status' => 'completed',
+                'payment_date' => now()
+            ]);
+
+            // Update order's payment status
+            $order->update(['payment_status' => 'completed']);
+
+            return view('payments.success')->with('success', 'Payment successful.');
+        } else {
+            return view('payments.cancel')->with('error', 'Payment failed.');
         }
     }
 
@@ -75,9 +96,24 @@ class PaypalController extends Controller
      * @throws Exception
      * @throws Throwable
      */
-    public function cancel(Request $request)
+    public function cancel(Request $request): View
     {
-        return redirect()->route('checkout')->with('error', 'Payment cancelled.');
+        //$order is the latest order of the user
+        $order = Order::where('user_id', auth()->user()->id)->latest()->first();
+
+        // Create a failed payment record
+        Payment::create([
+            'user_id' => auth()->user()->id,
+            'order_id' => $order->id,
+            'status' => 'cancelled',
+            'payment_date' => now()
+        ]);
+
+        // Update order's payment status
+        $order->update(['payment_status' => 'cancelled']);
+
+        return view('payments.cancel')->with('error', 'Payment cancelled.');
     }
+
 
 }
