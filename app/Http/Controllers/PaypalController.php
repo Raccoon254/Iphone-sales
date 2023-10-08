@@ -46,12 +46,6 @@ class PaypalController extends Controller
             ]
         ]);
 
-        //clear cart
-        $cart = session()->get('cart');
-        if(isset($cart)) {
-            session()->forget('cart');
-        }
-
         if(isset($response['id']) && $response['id'] != '' && $response['status'] == 'CREATED') {
             foreach($response['links'] as $link) {
                 if($link['rel'] == 'approve') {
@@ -109,6 +103,13 @@ class PaypalController extends Controller
 
             // Update order's payment status
             $order->update(['payment_status' => 'completed']);
+
+
+            //clear cart
+            $cart = session()->get('cart');
+            if(isset($cart)) {
+                session()->forget('cart');
+            }
 
             return view('payments.success')->with('success', 'Payment successful.');
         } else {
