@@ -21,6 +21,8 @@ class PaypalController extends Controller
      */
     public function payment(Request $request)
     {
+        $order = Order::findOrFail($request->order_id);
+
         $amount = $request->price;
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
@@ -34,7 +36,8 @@ class PaypalController extends Controller
                     'amount' => [
                         'value' => $amount,
                         'currency_code' => 'USD'
-                    ]
+                    ],
+                    'description' => 'Order ID: ' . $order->id,
                 ]
             ],
             'application_context' => [
@@ -52,6 +55,7 @@ class PaypalController extends Controller
         }else {
             return redirect()->route('checkout')->with('error', 'Something went wrong. Please try again later.');
         }
+        return redirect()->route('checkout')->with('error', 'Something went wrong. Please try again later.');
     }
 
     /**
@@ -66,9 +70,13 @@ class PaypalController extends Controller
         $provider->getAccessToken();
 
         $response = $provider->capturePaymentOrder($request->token);
+        $orderAmount = $response['purchase_units'][0]['payments']['captures'][0]['amount']['value'];
 
-        //last order made by user
-        $order = Order::where('user_id', auth()->user()->id)->latest()->first();
+        // Fetch the latest order of the logged-in user with the exact grand total
+        $order = Order::where('user_id', auth()->user()->id)
+            ->where('grand_total', $orderAmount)
+            ->latest()
+            ->firstOrFail();
         $amount = $order->grand_total;
 
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
@@ -98,9 +106,20 @@ class PaypalController extends Controller
      */
     public function cancel(Request $request): View
     {
-        //$order is the latest order of the user
-        $order = Order::where('user_id', auth()->user()->id)->latest()->first();
+        $provider = new PayPalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $provider->setCurrency('USD');
+        $provider->getAccessToken();
 
+        $response = $provider->capturePaymentOrder($request->token);
+        $orderAmount = $response['purchase_units'][0]['payments']['captures'][0]['amount']['value'];
+
+        // Fetch the latest order of the logged-in user with the exact grand total
+        $order = Order::where('user_id', auth()->user()->id)
+            ->where('grand_total', $orderAmount)
+            ->latest()
+            ->firstOrFail();
+        $amount = $order->grand_total;
         // Create a failed payment record
         Payment::create([
             'user_id' => auth()->user()->id,

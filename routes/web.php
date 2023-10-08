@@ -27,7 +27,7 @@ Route::get('test', function () {
     return view('tests.index');
 });
 
-Route::post('pay', [PaypalController::class, 'payment'])->name('paypal.payment');
+Route::get('pay', [PaypalController::class, 'payment'])->name('paypal.payment');
 Route::get('success', [PaypalController::class, 'success'])->name('paypal.success');
 Route::get('cancel', [PaypalController::class, 'cancel'])->name('paypal.cancel');
 

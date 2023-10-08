@@ -63,12 +63,6 @@ class OrdersController extends Controller
             'items' => json_decode($request->input('items'), true),
         ]);
 
-        $total = 0;
-        //calculate total price in cart\
-        foreach (session('cart') as $id => $details) {
-            $total += $details['price'] * $details['quantity'];
-        }
-
         // Notify the user
         $user = auth()->user();
         $user->notify(new OrderCreatedUserNotification($order, session('cart'), $total));
@@ -77,6 +71,21 @@ class OrdersController extends Controller
         $admins = User::where('role', 'admin')->get();
         Notification::send($admins, new OrderCreatedAdminNotification($order, session('cart'), $total));
 
+
+        $total = 0;
+        foreach (session('cart') as $id => $details) {
+            $total += $details['price'] * $details['quantity'];
+        }
+
+        // Ensure the order total and cart total match
+        if ($order->grand_total != $total) {
+            return redirect()->back()->with('error', 'There was a mismatch with the total amount. Please try again.');
+        }
+
+        // Redirect to the payment process if payment method is PayPal
+        if ($request->input('payment_method') == 'paypal') {
+            return redirect()->route('paypal.payment', ['price' => $total, 'order_id' => $order->id]);
+        }
 
         // Clear the cart session data
         session()->forget('cart');
