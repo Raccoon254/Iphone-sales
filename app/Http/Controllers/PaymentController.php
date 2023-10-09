@@ -12,13 +12,9 @@ use Illuminate\View\View;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use Throwable;
 
-class PaypalController extends Controller
+class PaymentController extends Controller
 {
 
-    /**
-     * @throws Exception
-     * @throws Throwable
-     */
     public function payment(Request $request): RedirectResponse|Redirector
     {
         $order = Order::findOrFail($request->order_id);
