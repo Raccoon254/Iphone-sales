@@ -1,18 +1,17 @@
 @if(Auth::check())
     <x-app-layout>
+        <!-- Page Content -->
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
                 <!-- Product Images -->
                 <div class="flex flex-wrap -mx-2 overflow-hidden sm:-mx-2 md:-mx-2 lg:-mx-2 xl:-mx-2">
-
                     @foreach($product->images as $image)
                         <div class="my-2 px-2 w-full overflow-hidden
-            {{ count($product->images) > 1 ? 'sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2' : 'sm:w-full md:w-full lg:w-full xl:w-full' }}">
-
+                        {{ count($product->images) > 1 ? 'sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2' : 'sm:w-full md:w-full lg:w-full xl:w-full' }}">
                             <img src="{{ asset('images/' . $image->image_path) }}" alt="{{ $product->name }}" class="w-full h-auto rounded">
                         </div>
                     @endforeach
-
                 </div>
 
 
@@ -73,7 +72,7 @@
 
 
                     <div wire:key="add-to-cart-{{ $product->id }}">
-                        @livewire('add-to-cart', ['product' => $product], key($product->id))
+                        @livewire('add-to-cart', ['product' => $product, 'extraClass' => 'btn-md rounded-full px-6 btn-outline btn-warning w-full sm:w-1/2'], key($product->id))
                     </div>
 
                 </div>
@@ -135,23 +134,23 @@
 
         <!-- Page Content -->
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
                 <!-- Product Images -->
                 <div class="flex flex-wrap -mx-2 overflow-hidden sm:-mx-2 md:-mx-2 lg:-mx-2 xl:-mx-2">
-                    @foreach($product->images as $index => $image)
-                        <div class="my-2 px-2 w-full overflow-hidden sm:my-2 sm:px-2 sm:w-1/2 md:my-2 md:px-2 md:w-1/2 lg:my-2 lg:px-2 lg:w-1/2 xl:my-2 xl:px-2 xl:w-1/2 {{ $index !== 0 ? ' hidden sm:block' : '' }}">
+                    @foreach($product->images as $image)
+                        <div class="my-2 px-2 w-full overflow-hidden
+                        {{ count($product->images) > 1 ? 'sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2' : 'sm:w-full md:w-full lg:w-full xl:w-full' }}">
                             <img src="{{ asset('images/' . $image->image_path) }}" alt="{{ $product->name }}" class="w-full h-auto rounded">
                         </div>
                     @endforeach
                 </div>
 
-
                 <!-- Product Details -->
                 <div>
                     <h2 class="text-2xl font-semibold mb-2">{{ $product->name }}</h2>
                     <p class="text-gray-600 mb-6">{{ $product->description }}</p>
-
-                    <table class="table border-solid border-2 border-gray-200 table-zebra w-full mb-6">
+                    <table class="table border-solid border-2 border-gray-200 table-zebra w-full mb-6 overflow-x-auto">
                         <tbody>
                         <tr>
                             <th scope="row"><i class="fas fa-dollar-sign"></i> Price</th>
@@ -179,31 +178,25 @@
                         </tr>
                         </tbody>
                     </table>
-
                     <div class="tooltip w-full" wire:key="add-to-cart-{{ $product->id }}">
                         @livewire('add-to-cart', ['product' => $product, 'extraClass' => 'btn-md rounded-full px-6 btn-outline btn-warning w-full sm:w-1/2'], key($product->id))
                     </div>
-
-
                 </div>
-
             </div>
 
             <div class="container p-2 sm:p-8">
-
                 <section>
                     <h2 class="text-2xl font-semibold mb-2 mt-6">Related Products</h2>
                 </section>
-
-                <div class="products grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div class="products grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                     @foreach ($relatedProducts as $prod)
                         @include('prod.relatedProd')
                     @endforeach
                 </div>
             </div>
-
         </div>
     </div>
+
     </body>
     </html>
 
