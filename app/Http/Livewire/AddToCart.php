@@ -15,7 +15,7 @@ class AddToCart extends Component
     /**
      * @var mixed|string
      */
-    public mixed $extraClass;
+    public mixed $extraClass='';
 
     public function mount(Product $product, $extraClass = ''): void
     {

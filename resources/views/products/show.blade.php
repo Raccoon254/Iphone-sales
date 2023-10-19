@@ -52,9 +52,9 @@
                     @auth
                         @if(Auth::user()->isAdmin())
                             <!--if the user is an admin, show the edit and delete buttons-->
-                            <div class="flex items-center space-x-4">
+                            <div class="flex items-center justify-center gap-4 mb-4">
                                 <a href="{{ route('products.edit', $product) }}">
-                                    <x-round-button type="submit">
+                                    <x-round-button class="btn-sm" type="submit">
                                         <i class="fas fa-pencil-alt"></i>
                                     </x-round-button>
                                 </a>
@@ -62,7 +62,7 @@
                                 <form action="{{ route('products.destroy', $product) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <x-round-button type="submit" class="text-white bg-red-500">
+                                    <x-round-button type="submit" class="text-white btn-sm bg-red-500">
                                         <i class="fas fa-trash"></i>
                                     </x-round-button>
                                 </form>
@@ -70,9 +70,8 @@
                         @endif
                     @endauth
 
-
-                    <div wire:key="add-to-cart-{{ $product->id }}">
-                        @livewire('add-to-cart', ['product' => $product, 'extraClass' => 'btn-md rounded-full px-6 btn-outline btn-warning w-full sm:w-1/2'], key($product->id))
+                    <div class="flex justify-center items-center" wire:key="add-to-cart-{{ $product->id }}">
+                        @livewire('add-to-cart', ['product' => $product, 'extraClass' => 'btn-primary rounded-full btn-outline btn-warning w-[300px] sm:w-[400px] md:w-[500px] h-[50px] text-2xl'], key($product->id))
                     </div>
 
                 </div>
@@ -178,8 +177,8 @@
                         </tr>
                         </tbody>
                     </table>
-                    <div class="tooltip w-full" wire:key="add-to-cart-{{ $product->id }}">
-                        @livewire('add-to-cart', ['product' => $product, 'extraClass' => 'btn-md rounded-full px-6 btn-outline btn-warning w-full sm:w-1/2'], key($product->id))
+                    <div class="flex justify-center items-center" wire:key="add-to-cart-{{ $product->id }}">
+                        @livewire('add-to-cart', ['product' => $product, 'extraClass' => 'btn-primary rounded-full btn-outline btn-warning w-[300px] sm:w-[400px] md:w-[500px] h-[50px] text-2xl'], key($product->id))
                     </div>
                 </div>
             </div>
