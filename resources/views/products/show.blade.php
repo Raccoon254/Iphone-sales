@@ -8,51 +8,130 @@
                 <div class="flex flex-wrap -mx-2 overflow-hidden sm:-mx-2 md:-mx-2 lg:-mx-2 xl:-mx-2">
                     @foreach($product->images as $image)
                         <div class="my-2 px-2 w-full overflow-hidden
-                        {{ count($product->images) > 1 ? 'sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2' : 'sm:w-full md:w-full lg:w-full xl:w-full' }}">
+                {{ count($product->images) > 1 ? 'sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2' : 'sm:w-full md:w-full lg:w-full xl:w-full' }}">
                             <img src="{{ asset('images/' . $image->image_path) }}" alt="{{ $product->name }}" class="w-full h-auto rounded">
                         </div>
                     @endforeach
                 </div>
-
 
                 <!-- Product Details -->
                 <div>
                     <h2 class="text-2xl font-semibold mb-2">{{ $product->name }}</h2>
                     <p class="text-gray-600 mb-6">{{ $product->description }}</p>
 
-                    <table class="table border-solid border-2 border-gray-200 table-zebra w-full mb-6">
-                        <tbody>
-                        <tr>
-                            <th scope="row"><i class="fas fa-dollar-sign"></i> Price</th>
-                            <td>{{ $product->price }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><i class="fas fa-palette"></i> Color</th>
-                            <td>{{ $product->color }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><i class="fas fa-cube"></i> Specs</th>
-                            <td>{{ $product->specs }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><i class="fas fa-industry"></i> Brand</th>
-                            <td>{{ $product->brand }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><i class="fas fa-archive"></i> Stock</th>
-                            <td>{{ $product->stock }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><i class="fas fa-percentage"></i> Discount Percentage</th>
-                            <td>{{ $product->discount_percentage }}%</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                        <div class="p-4 bg-white rounded shadow">
+                            <div class="container grid grid-cols-2">
+                                <div class="left flex items-center justify-center w-full h-full">
+                                    <i class="fas fa-coins text-5xl mb-2"></i>
+                                </div>
+                                <div class="right">
+                                    <h4 class="text-2xl text-orange-800 font-semibold">Price</h4>
+                                    <p class="text-3xl">{{ $product->price }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-white rounded shadow">
+                            <div class="container grid grid-cols-2">
+                                <div class="left flex items-center justify-center w-full h-full">
+                                    <i class="fas fa-lightbulb text-5xl mb-2"></i>
+                                </div>
+                                <div class="right">
+                                    <h4 class="text-2xl text-orange-800 font-semibold">Brand</h4>
+                                    <p class="text-3xl">{{ $product->brand }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white flex flex-col gap-4 justify-between">
+                            <div class="container rounded h-1/2 shadow grid grid-cols-2">
+                                <div class="left flex items-center justify-center w-full h-full">
+                                    <i class="fas fa-palette text-5xl mb-2"></i>
+                                </div>
+                                <div class="right">
+                                    <h4 class="text-2xl text-orange-800 font-semibold">Main Color</h4>
+                                    <p class="text-3xl">{{ $product->color }}</p>
+                                </div>
+                            </div>
+
+                            <div class="container rounded  h-1/2 shadow grid grid-cols-2">
+                                <div class="left flex items-center justify-center w-full h-full">
+                                    <i class="fas fa-percent text-5xl mb-2"></i>
+                                </div>
+                                <div class="right">
+                                    <h4 class="text-2xl text-orange-800 font-semibold">Discount</h4>
+                                    <p class="text-3xl">{{ $product->discount_percentage }}%</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-white rounded shadow">
+                            <center class="text-2xl font-semibold mb-4">Specs</center>
+                            <!-- {"ram":"4GB","rom":"32GB","screen_size":"5.5 inches","processor":"Snapdragon 865","camera":"12MP","battery_capacity":"5000 mAh","operating_system":"One UI 3.0","connectivity":"Bluetooth 5.2","colors":["Red","White"]} -->
+                            @php
+                                $product->specs = json_decode($product->specs, true);
+                            @endphp
+                            <ul class="grid grid-cols-3 place-items-start">
+                                @php
+                                    $iconClasses = "w-6 text-gray-700 group-hover:text-gray-500";
+                                @endphp
+
+                                @foreach([
+                                    'processor' => ['icon' => 'fa-microchip', 'label' => 'Processor', 'suffix' => ' GHz'],
+                                    'ram' => ['icon' => 'fa-memory', 'label' => 'RAM', 'suffix' => ' GB'],
+                                    'rom' => ['icon' => 'fa-hdd', 'label' => 'ROM', 'suffix' => ' GB'],
+                                    'screen_size' => ['icon' => 'fa-mobile', 'label' => 'Screen Size', 'suffix' => ' cm'],
+                                    'camera' => ['icon' => 'fa-camera', 'label' => 'Camera', 'suffix' => ' MP'],
+                                    'battery_capacity' => ['icon' => 'fa-battery-full', 'label' => 'Battery Capacity', 'suffix' => ' mAh'],
+                                    'operating_system' => ['icon' => 'fa-cogs', 'label' => 'Operating System'],
+                                    'connectivity' => ['icon' => 'fa-wifi', 'label' => 'Connectivity'],
+
+                                ] as $key => $data)
+                                    <li class="group p-1 tooltip flex justify-center items-center space-x-2" data-tip="{{ $data['label'] }}">
+                                        <i class="{{ $iconClasses }} fas {{ $data['icon'] }}"></i>
+                                        <span class="text-xs">{{ $product->specs[$key] }}{{ $data['suffix'] ?? '' }}</span>
+                                    </li>
+                                @endforeach
+
+                                <li data-tip="Colors" class="group p-1 tooltip flex justify-center items-center space-x-2">
+                                    <i class="{{ $iconClasses }} fas fa-palette"></i>
+                                    <div class="flex space-x-1">
+                                        @foreach($product->specs['colors'] as $color)
+                                            <span class="color-badge h-4 w-4 rounded-full" style="background-color: {{ $color }}"></span>
+                                        @endforeach
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <style>
+                                .color-badge:hover {
+                                    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+                                }
+                            </style>
+
+                        </div>
+
+                        <div class="p-4 bg-white rounded shadow">
+                            <div class="container grid grid-cols-2">
+                                <div class="left flex items-center justify-center w-full h-full">
+                                    <i class="fas fa-archive text-5xl mb-2"></i>
+                                </div>
+                                <div class="right">
+                                    <h4 class="text-2xl text-orange-800 font-semibold">Stock</h4>
+                                    <p class="text-3xl">{{ $product->stock }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
 
                     @auth
                         @if(Auth::user()->isAdmin())
                             <!--if the user is an admin, show the edit and delete buttons-->
-                            <div class="flex items-center justify-center gap-4 mb-4">
+                            <div class="flex items-center justify-center gap-4 my-4">
                                 <a href="{{ route('products.edit', $product) }}">
                                     <x-round-button class="btn-sm" type="submit">
                                         <i class="fas fa-pencil-alt"></i>
