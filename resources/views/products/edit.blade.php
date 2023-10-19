@@ -50,30 +50,87 @@
 
             <!-- Product Color -->
             <div class="form-control">
-                <label for="color" class="label-text">Color</label>
+                <label for="color" class="label-text">Main Color</label>
                 <input type="text" class="input input-bordered w-full" id="color" name="color" value="{{ $product->color }}" required>
             </div>
 
                 <!-- Product Specs -->
-                <div class="form-control">
-                    <label for="specs" class="label-text">Specs</label>
+                <!-- {"ram":"4GB","rom":"32GB","screen_size":"5.5 inches","processor":"Snapdragon 865","camera":"12MP","battery_capacity":"5000 mAh","operating_system":"One UI 3.0","connectivity":"Bluetooth 5.2","colors":["Red","White"]} -->
 
-                    @foreach($product->specs as $key => $value)
+                <div class="bg-gray-50 p-2 rounded-md">
+
+                    <div class="label-text text-white bg-gray-500 w-full text-2xl uppercase rounded flex justify-center mb-4">Specs</div>
+
+                    <div class="flex gap-4">
                         <div class="mb-4">
-                            <label for="spec_{{ $key }}" class="block text-sm font-medium text-gray-700">{{ ucfirst(str_replace('_', ' ', $key)) }}</label>
-                            @if(is_array($value))
-                                <select name="specs[{{ $key }}][]" multiple id="spec_{{ $key }}" class="input input-bordered w-full">
-                                    <!-- Assuming you have predefined options for arrays like colors -->
-                                    @foreach(['Red', 'White', 'Blue', 'Green'] as $option) <!-- replace with actual options -->
-                                    <option value="{{ $option }}" {{ in_array($option, $value) ? 'selected' : '' }}>{{ $option }}</option>
-                                    @endforeach
-                                </select>
-                            @else
-                                <input type="text" class="input input-bordered w-full" id="spec_{{ $key }}" name="specs[{{ $key }}]" value="{{ $value }}">
-                            @endif
+                            <label for="ram">RAM</label>
+                            <input type="text" class="input input-bordered w-full" id="ram" value="{{ $product->specs['ram'] ?? '' }}">
                         </div>
-                    @endforeach
+                        <div class="mb-4">
+                            <label for="rom">ROM</label>
+                            <input type="text" class="input input-bordered w-full" id="rom" value="{{ $product->specs['rom'] ?? '' }}">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="mb-4">
+                            <label for="screen_size">Screen Size</label>
+                            <input type="text" class="input input-bordered w-full" id="screen_size" value="{{ $product->specs['screen_size'] ?? '' }}">
+                        </div>
+                        <div class="mb-4">
+                            <label for="processor">Processor</label>
+                            <input type="text" class="input input-bordered w-full" id="processor" value="{{ $product->specs['processor'] ?? '' }}">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="mb-4">
+                            <label for="camera">Camera</label>
+                            <input type="text" class="input input-bordered w-full" id="camera" value="{{ $product->specs['camera'] ?? '' }}">
+                        </div>
+                        <div class="mb-4">
+                            <label for="battery_capacity">Battery Capacity</label>
+                            <input type="text" class="input input-bordered w-full" id="battery_capacity" value="{{ $product->specs['battery_capacity'] ?? '' }}">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="mb-4">
+                            <label for="operating_system">Operating System</label>
+                            <input type="text" class="input input-bordered w-full" id="operating_system" value="{{ $product->specs['operating_system'] ?? '' }}">
+                        </div>
+                        <div class="mb-4">
+                            <label for="connectivity">Connectivity</label>
+                            <input type="text" class="input input-bordered w-full" id="connectivity" value="{{ $product->specs['connectivity'] ?? '' }}">
+                        </div>
+                    </div>
+
+
+                    <div class="">
+                        <label for="colors">Colors (comma-separated)</label>
+                        <input type="text" class="input input-bordered w-full" id="colors" value="{{ implode(',', $product->specs['colors'] ?? []) }}">
+                    </div>
+
+                    <input type="hidden" name="specs" id="specs">
                 </div>
+
+                <script>
+                    function combineSpecs() {
+                        let specs = {
+                            ram: document.getElementById('ram').value,
+                            rom: document.getElementById('rom').value,
+                            screen_size: document.getElementById('screen_size').value,
+                            processor: document.getElementById('processor').value,
+                            camera: document.getElementById('camera').value,
+                            battery_capacity: document.getElementById('battery_capacity').value,
+                            operating_system: document.getElementById('operating_system').value,
+                            connectivity: document.getElementById('connectivity').value,
+                            colors: document.getElementById('colors').value.split(',')
+                        };
+
+                        document.getElementById('specs').value = JSON.stringify(specs);
+                    }
+                </script>
 
 
                 <!-- Product Brand -->
@@ -166,7 +223,7 @@
             </div>
 
             <div class="tooltip" data-tip="Save Data">
-                <x-round-button type="submit">{!! '<i class="fa-solid fa-sd-card"></i>' !!}</x-round-button>
+                <x-round-button onClick="combineSpecs()" type="submit">{!! '<i class="fa-solid fa-sd-card"></i>' !!}</x-round-button>
             </div>
 
             </div>

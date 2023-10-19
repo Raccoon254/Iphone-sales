@@ -165,9 +165,6 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id): JsonResponse
     {
-        $request->merge([
-            'specs' => json_encode($request->input('specs'))
-        ]);
 
         $request->validate([
             'name' => 'required',
