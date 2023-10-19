@@ -51,7 +51,7 @@
 
                 <!-- Product Color -->
                 <div class="form-control">
-                    <label for="color" class="label-text">Color</label>
+                    <label for="color" class="label-text">Main Color</label>
                     <input type="text" class="input input-bordered w-full" id="color" name="color" required>
                 </div>
 
@@ -64,7 +64,7 @@
 
                 <div class="flex px-3 gap-4">
                     <div class="tooltip" data-tip="Save Data">
-                        <button class="btn btn-outline rounded-full w-[280px]" type="submit">{!! 'Save Product <i class="fa-solid fa-sd-card"></i>' !!}</button>
+                        <button  onclick="combineSpecs()" class="btn btn-outline rounded-full w-[280px]" type="submit">{!! 'Save Product <i class="fa-solid fa-sd-card"></i>' !!}</button>
                     </div>
 
                 </div>
@@ -76,10 +76,81 @@
             <div class="lg:w-[300px] flex flex-col w-full p-2 gap-4">
 
                 <!-- Product Specs -->
-                <div class="form-control">
-                    <label for="specs" class="label-text">Specs</label>
-                    <input type="text" class="input input-bordered w-full" id="specs" name="specs" required>
+                <!-- {"ram":"4GB","rom":"32GB","screen_size":"5.5 inches","processor":"Snapdragon 865","camera":"12MP","battery_capacity":"5000 mAh","operating_system":"One UI 3.0","connectivity":"Bluetooth 5.2","colors":["Red","White"]} -->
+                <div class="bg-gray-50 p-2 rounded-md">
+
+                    <div class="label-text text-white bg-gray-500 w-full text-2xl uppercase rounded flex justify-center mb-4">Specs</div>
+
+                    <div class="flex gap-4">
+                        <div class="mb-4">
+                            <label for="ram">RAM</label>
+                            <input type="text" class="input input-bordered w-full" id="ram">
+                        </div>
+                        <div class="mb-4">
+                            <label for="rom">ROM</label>
+                            <input type="text" class="input input-bordered w-full" id="rom">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="mb-4">
+                            <label for="screen_size">Screen Size</label>
+                            <input type="text" class="input input-bordered w-full" id="screen_size">
+                        </div>
+                        <div class="mb-4">
+                            <label for="processor">Processor</label>
+                            <input type="text" class="input input-bordered w-full" id="processor">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="mb-4">
+                            <label for="camera">Camera</label>
+                            <input type="text" class="input input-bordered w-full" id="camera">
+                        </div>
+                        <div class="mb-4">
+                            <label for="battery_capacity">Battery Capacity</label>
+                            <input type="text" class="input input-bordered w-full" id="battery_capacity">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="mb-4">
+                            <label for="operating_system">Operating System</label>
+                            <input type="text" class="input input-bordered w-full" id="operating_system">
+                        </div>
+                        <div class="mb-4">
+                            <label for="connectivity">Connectivity</label>
+                            <input type="text" class="input input-bordered w-full" id="connectivity">
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <label for="colors">Colors (comma-separated)</label>
+                        <input type="text" class="input input-bordered w-full" id="colors">
+                    </div>
+
+                    <input type="hidden" name="specs" id="specs">
                 </div>
+
+                <script>
+                    function combineSpecs() {
+                        let specs = {
+                            ram: document.getElementById('ram').value,
+                            rom: document.getElementById('rom').value,
+                            screen_size: document.getElementById('screen_size').value,
+                            processor: document.getElementById('processor').value,
+                            camera: document.getElementById('camera').value,
+                            battery_capacity: document.getElementById('battery_capacity').value,
+                            operating_system: document.getElementById('operating_system').value,
+                            connectivity: document.getElementById('connectivity').value,
+                            colors: document.getElementById('colors').value.split(',')
+                        };
+
+                        document.getElementById('specs').value = JSON.stringify(specs);
+                    }
+                </script>
+
 
                 <!-- Product Brand -->
                 <div class="form-control">
