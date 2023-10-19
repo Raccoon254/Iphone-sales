@@ -104,6 +104,8 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'ShoeShop') }}</title>
+        <!--description-->
+        <meta name="description" content="{{ $product->description }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -178,7 +180,7 @@
                         </tbody>
                     </table>
 
-                    <div data-tip="Add to Cart" class="tooltip w-full" wire:key="add-to-cart-{{ $product->id }}">
+                    <div class="tooltip w-full" wire:key="add-to-cart-{{ $product->id }}">
                         @livewire('add-to-cart', ['product' => $product, 'extraClass' => 'btn-md rounded-full px-6 btn-outline btn-warning w-full sm:w-1/2'], key($product->id))
                     </div>
 
