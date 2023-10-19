@@ -155,6 +155,7 @@ class ProductController extends Controller
         //
         $categories = Category::all();
         $product = Product::findOrFail($id);
+        $product->specs = json_decode($product->specs, true);
         return view('products.edit', compact('product', 'categories'));
     }
 
@@ -163,6 +164,10 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id): \Illuminate\Http\JsonResponse
     {
+        $request->merge([
+            'specs' => json_encode($request->input('specs'))
+        ]);
+
         $request->validate([
             'name' => 'required',
             'description' => 'required',

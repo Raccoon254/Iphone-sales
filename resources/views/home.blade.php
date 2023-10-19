@@ -128,10 +128,10 @@
                 </div>
             </div>
 
-
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid aperiam architecto asperiores aut corporis dolore eligendi est fuga harum inventore, minus, necessitatibus nisi officiis omnis praesentium quia quod repellat ut?
         </div>
     </section>
+
+
     @livewireScripts
     <script src="//unpkg.com/alpinejs" defer></script>
     </body>

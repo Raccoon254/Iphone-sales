@@ -54,13 +54,29 @@
                 <input type="text" class="input input-bordered w-full" id="color" name="color" value="{{ $product->color }}" required>
             </div>
 
-            <!-- Product Specs -->
-            <div class="form-control">
-                <label for="specs" class="label-text">Specs</label>
-                <input type="text" class="input input-bordered w-full" id="specs" name="specs" value="{{ $product->specs }}" required>
-            </div>
+                <!-- Product Specs -->
+                <div class="form-control">
+                    <label for="specs" class="label-text">Specs</label>
 
-            <!-- Product Brand -->
+                    @foreach($product->specs as $key => $value)
+                        <div class="mb-4">
+                            <label for="spec_{{ $key }}" class="block text-sm font-medium text-gray-700">{{ ucfirst(str_replace('_', ' ', $key)) }}</label>
+                            @if(is_array($value))
+                                <select name="specs[{{ $key }}][]" multiple id="spec_{{ $key }}" class="input input-bordered w-full">
+                                    <!-- Assuming you have predefined options for arrays like colors -->
+                                    @foreach(['Red', 'White', 'Blue', 'Green'] as $option) <!-- replace with actual options -->
+                                    <option value="{{ $option }}" {{ in_array($option, $value) ? 'selected' : '' }}>{{ $option }}</option>
+                                    @endforeach
+                                </select>
+                            @else
+                                <input type="text" class="input input-bordered w-full" id="spec_{{ $key }}" name="specs[{{ $key }}]" value="{{ $value }}">
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+
+
+                <!-- Product Brand -->
             <div class="form-control">
                 <label for="brand" class="label-text">Brand</label>
                 <input type="text" class="input input-bordered w-full" id="brand" name="brand" value="{{ $product->brand }}" required>
