@@ -68,15 +68,15 @@ class OrdersController extends Controller
         $user = auth()->user();
         //$total = $request->input('total');
 
+        $total = 0;
+        foreach (session('cart') as $id => $details) {
+            $total += $details['price'] * $details['quantity'];
+        }
         // Notify admins
         $admins = User::where('role', 'admin')->get();
         Notification::send($admins, new OrderCreatedAdminNotification($order, session('cart'), $total));
 
 
-        $total = 0;
-        foreach (session('cart') as $id => $details) {
-            $total += $details['price'] * $details['quantity'];
-        }
         $user->notify(new OrderCreatedUserNotification($order, session('cart'), $total));
 
         // Ensure the order total and cart total match
