@@ -38,7 +38,7 @@
                             @if(isset($mainBanner->image_url))
                                 <img src="{{ $mainBanner->image_url}}" class="rounded lazyloaded md:h-[580px] object-cover w-full" alt="" decoding="async" sizes="(max-width: 887px) 100vw, 887px" srcset="{{ $mainBanner->image_url }}" data-ll-status="loaded">
                                 @else
-                                <img  src="https://airjordanofficial.us.com/wp-content/uploads/2023/06/left_banner-1.jpg" class="rounded lazyloaded h-full" alt="" decoding="async" sizes="(max-width: 887px) 100vw, 887px" srcset="https://airjordanofficial.us.com/wp-content/uploads/2023/06/left_banner-1.jpg 887w, https://airjordanofficial.us.com/wp-content/uploads/2023/06/left_banner-1-300x198.jpg 300w, https://airjordanofficial.us.com/wp-content/uploads/2023/06/left_banner-1-768x506.jpg 768w, https://airjordanofficial.us.com/wp-content/uploads/2023/06/left_banner-1-150x99.jpg 150w, https://airjordanofficial.us.com/wp-content/uploads/2023/06/left_banner-1-450x296.jpg 450w" data-ll-status="loaded">
+                                <img src="{{ asset('images/left_banner-1.jpg') }}">
                             @endif
 
 
@@ -65,7 +65,7 @@
                                 <img src="{{ $trBanner->image_url}}" class="rounded lazyloaded" alt="" decoding="async" sizes="(max-width: 680px) 100vw, 680px" srcset="{{ $trBanner->image_url }}" data-ll-status="loaded">
                             @else
 
-                            <img  src="https://airjordanofficial.us.com/wp-content/uploads/2023/06/Off-White-x-Air-Jordan-0.jpg" class="rounded lazyloaded" alt="" decoding="async" sizes="(max-width: 680px) 100vw, 680px" srcset="https://airjordanofficial.us.com/wp-content/uploads/2023/06/Off-White-x-Air-Jordan-0.jpg 680w, https://airjordanofficial.us.com/wp-content/uploads/2023/06/Off-White-x-Air-Jordan-0-300x200.jpg 300w, https://airjordanofficial.us.com/wp-content/uploads/2023/06/Off-White-x-Air-Jordan-0-150x100.jpg 150w, https://airjordanofficial.us.com/wp-content/uploads/2023/06/Off-White-x-Air-Jordan-0-450x300.jpg 450w" data-ll-status="loaded">
+                            <img  src="{{ asset('images/right_banner-1.jpg') }}" class="rounded" alt="" decoding="async" sizes="(max-width: 400px) 100vw, 400px" srcset="{{ asset('images/right_banner-1.jpg') }}" />
 
                             @endif
 
@@ -90,7 +90,7 @@
                                 <img src="{{ $brBanner->image_url}}" class="rounded lazyloaded" alt="" decoding="async" sizes="(max-width: 680px) 100vw, 680px" srcset="{{ $brBanner->image_url }}" data-ll-status="loaded">
                             @else
 
-                            <img  src="https://airjordanofficial.us.com/wp-content/uploads/2023/06/admin-ajax-1.jpg" class="rounded" alt="" decoding="async" sizes="(max-width: 400px) 100vw, 400px" srcset="https://airjordanofficial.us.com/wp-content/uploads/2023/06/admin-ajax-1.jpg 400w, https://airjordanofficial.us.com/wp-content/uploads/2023/06/admin-ajax-1-300x193.jpg 300w, https://airjordanofficial.us.com/wp-content/uploads/2023/06/admin-ajax-1-150x96.jpg 150w" />
+                            <img  src="{{ asset('images/right_banner-2.jpg') }}" class="rounded" alt="" decoding="async" sizes="(max-width: 400px) 100vw, 400px" srcset="{{ asset('images/right_banner-2.jpg') }}" />
 
                             @endif
 
@@ -122,7 +122,7 @@
 
         <div class="products">
 
-            <div class="container p-2 sm:p-8">
+            <div class="container w-full p-2 sm:p-8">
                 <div>
                     @livewire('search-products')
                 </div>
