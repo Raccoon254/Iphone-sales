@@ -76,6 +76,9 @@ Route::get('/admin/orders/{order}', [AdminController::class, 'showOrder'])->name
 //admin.orders.update (update order status)
 Route::patch('/admin/orders/{order}', [AdminController::class, 'updateOrderStatus'])->name('order-update-status')->middleware('auth', 'can:manage-products');
 
+
+//payments.pay
+Route::get('/payments/{payment}/pay', [OrdersController::class, 'pay'])->name('payments.pay')->middleware('auth');
 Route::get('/t', [NotificationController::class, 'test'])->name('test-n')->middleware('auth');
 Route::get('/notifications/user/all', [NotificationController::class, 'forUser'])->name('notifications.user')->middleware('auth');
 Route::post('notifications/{notification}/mark-as-unread', [NotificationController::class, 'markAsUnread'])

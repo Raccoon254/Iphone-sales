@@ -89,8 +89,13 @@ class OrdersController extends Controller
         // Clear the cart session data
         session()->forget('cart');
 
-        return redirect()->route('orders.show', $order->id)
+        //return redirect()->route('orders.show', $order->id)
+        //->with('success', 'Order placed successfully!');
+
+        //redirect to payment instructions
+        return redirect()->route('payments.pay', $order->payment->id)
             ->with('success', 'Order placed successfully!');
+
     }
 
     //show
@@ -117,6 +122,13 @@ class OrdersController extends Controller
             ->paginate(10);
 
         return view('orders.all', compact('orders'));
+    }
+
+    //pay
+    public function pay($paymentId): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $payment = auth()->user()->payments()->findOrFail($paymentId);
+        return view('orders.pay', compact('payment'));
     }
 
 }

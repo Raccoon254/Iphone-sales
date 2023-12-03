@@ -115,7 +115,7 @@ class User extends Authenticatable
         return Notification::unreadForUser($this->id)->get();
     }
 
-    public function payment(): HasMany
+    public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
     }
