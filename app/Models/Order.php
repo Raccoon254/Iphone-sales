@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Env;
 
 class Order extends Model
 {
@@ -45,10 +48,41 @@ class Order extends Model
         'location' => 'array',
     ];
 
+    // In Order model
+    /*
+     * protected $fillable = [
+        'user_id',
+        'order_id',
+        'transaction_id',
+        'amount',
+        'currency',
+        'status',
+        'payment_date',
+    ];
+     */
+    public function createPayment(): Model
+    {
+        $user = auth()->user();
+        return $this->payment()->create([
+            'user_id' => $user->id,
+            'order_id' => $this->id,
+            'amount' => $this->grand_total,
+            'currency' => Env::get('APP_CURRENCY') ?? 'KES',
+            'status' => 'pending',
+            'payment_date' => now()
+        ]);
+    }
+
+
     //user
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function payment(): HasOne
+    {
+        return $this->hasOne(Payment::class);
     }
 
 }

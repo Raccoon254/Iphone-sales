@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\User;
 use App\Notifications\OrderCreatedAdminNotification;
-use App\Notifications\OrderCreatedNotification;
 use App\Notifications\OrderCreatedUserNotification;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -84,10 +83,7 @@ class OrdersController extends Controller
             return redirect()->back()->with('error', 'There was a mismatch with the total amount. Please try again.');
         }
 
-        // Redirect to the payment process if payment method is PayPal
-        if ($request->input('payment_method') == 'paypal') {
-            return redirect()->route('paypal.payment', ['price' => $total, 'order_id' => $order->id]);
-        }
+        //Handle payment ie redirect to payment gateway or view and show payment address and guidelines
 
         // Clear the cart session data
         session()->forget('cart');
@@ -97,18 +93,6 @@ class OrdersController extends Controller
     }
 
     //show
-    public function show(Order $order): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
-    {
-        return view('orders.show', compact('order'));
-    }
-    public function all(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
-    {
-        $orders = Order::where('user_id', auth()->user()->id)
-            ->orderBy('id', 'DESC')
-            ->paginate(10);
-
-        return view('orders.all', compact('orders'));
-    }
 
     private function generate_order_number(): string
     {
@@ -118,6 +102,20 @@ class OrdersController extends Controller
             return $this->generate_order_number();
         }
         return $order_number;
+    }
+
+    public function show(Order $order): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        return view('orders.show', compact('order'));
+    }
+
+    public function all(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $orders = Order::where('user_id', auth()->user()->id)
+            ->orderBy('id', 'DESC')
+            ->paginate(10);
+
+        return view('orders.all', compact('orders'));
     }
 
 }

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,6 +57,10 @@ class User extends Authenticatable
     ];
 
     //is admin
+    protected $dates = [
+        'last_login_at',
+    ];
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
@@ -78,19 +81,21 @@ class User extends Authenticatable
         return $unreadCount;
     }
 
+    //user orders
+
+    public function allNotifications(): \Illuminate\Database\Eloquent\Collection
+    {
+        return Notification::allForUser($this->id)->get();
+    }
+
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class);
     }
-    //user orders
+
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
-    }
-
-    public function unreadNotifications(): \Illuminate\Database\Eloquent\Collection
-    {
-        return Notification::unreadForUser($this->id)->get();
     }
 
     public function readNotifications(): \Illuminate\Database\Eloquent\Collection
@@ -98,17 +103,20 @@ class User extends Authenticatable
         return Notification::readForUser($this->id)->get();
     }
 
-    public function allNotifications(): \Illuminate\Database\Eloquent\Collection
-    {
-        return Notification::allForUser($this->id)->get();
-    }
-
     //get unread notifications
+
     public function getUnreadNotificationsAttribute(): \Illuminate\Database\Eloquent\Collection
     {
         return $this->unreadNotifications();
     }
-    protected $dates = [
-        'last_login_at',
-    ];
+
+    public function unreadNotifications(): \Illuminate\Database\Eloquent\Collection
+    {
+        return Notification::unreadForUser($this->id)->get();
+    }
+
+    public function payment(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 }
