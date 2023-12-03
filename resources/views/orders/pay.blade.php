@@ -64,21 +64,6 @@
                 <!-- Order ID -->
                 <input type="hidden" name="order_id" value="{{ $payment->order_id }}">
 
-                <!-- Payment Method -->
-                <input type="hidden" name="payment_method" value="{{ $payment->order->payment_method }}">
-
-                <!-- Amount -->
-                <input type="hidden" name="amount" value="{{ $payment->amount }}">
-
-                <!-- Currency -->
-                <input type="hidden" name="currency" value="{{ $payment->currency }}">
-
-                <!-- Status -->
-                <input type="hidden" name="status" value="{{ $payment->status }}">
-
-                <!-- Payment ID -->
-                <input type="hidden" name="payment_id" value="{{ $payment->id }}">
-
                 <button type="submit" class="btn btn-primary">Submit Payment Proof</button>
             </form>
         </div>
