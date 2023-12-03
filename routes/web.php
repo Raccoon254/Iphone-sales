@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminPaymentController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\NotificationController;
@@ -54,9 +55,9 @@ Route::put('/categories/{category}', [CategoriesController::class, 'update'])->n
 Route::delete('/categories/{category}', [CategoriesController::class, 'destroy'])->name('categories.destroy')->middleware('auth', 'can:manage-products');
 
 Route::middleware(['auth', 'can:manage-products'])->group(function () {
-    Route::get('/admin/payments', 'AdminPaymentController@index')->name('admin.payments.index');
-    Route::get('/admin/payments/{payment}', 'AdminPaymentController@show')->name('admin.payments.show');
-    Route::post('/admin/payments/{payment}/update-status', 'AdminPaymentController@updateStatus')->name('admin.payments.updateStatus');
+    Route::get('/admin/payments', [AdminPaymentController::class, 'index'])->name('admin.payments.index');
+    Route::get('/admin/payments/{payment}', [AdminPaymentController::class, 'show'])->name('admin.payments.show');
+    Route::post('/admin/payments/{payment}/update-status', [AdminPaymentController::class, 'updateStatus'])->name('admin.payments.updateStatus');
 });
 
 Route::resource('notifications', NotificationController::class)->middleware('auth', 'can:manage-products')->except('show')->name('notifications', 'notifications.index');
