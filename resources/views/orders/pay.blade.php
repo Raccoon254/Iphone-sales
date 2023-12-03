@@ -58,13 +58,16 @@
                 <!-- Payment Proof -->
                 <div class="mb-4">
                     <label for="proof" class="block font-medium">Payment Proof</label>
-                    <input type="file" class="form-input mt-1 block w-full" id="proof" name="proof" required>
+                    <input type="file" class="file-input file-input-bordered w-full max-w-xs" id="proof" name="proof"
+                           required>
                 </div>
 
                 <!-- Order ID -->
                 <input type="hidden" name="order_id" value="{{ $payment->order_id }}">
 
-                <button type="submit" class="btn btn-primary">Submit Payment Proof</button>
+                <x-primary-button type="submit" class="ring-2 btn btn-md ring-offset-1 ring-orange-500">Submit Payment
+                    Proof
+                </x-primary-button>
             </form>
         </div>
     </div>
