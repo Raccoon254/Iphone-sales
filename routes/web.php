@@ -53,6 +53,12 @@ Route::get('/categories/{category}/edit', [CategoriesController::class, 'edit'])
 Route::put('/categories/{category}', [CategoriesController::class, 'update'])->name('categories.update')->middleware('auth', 'can:manage-products');
 Route::delete('/categories/{category}', [CategoriesController::class, 'destroy'])->name('categories.destroy')->middleware('auth', 'can:manage-products');
 
+Route::middleware(['auth', 'can:manage-products'])->group(function () {
+    Route::get('/admin/payments', 'AdminPaymentController@index')->name('admin.payments.index');
+    Route::get('/admin/payments/{payment}', 'AdminPaymentController@show')->name('admin.payments.show');
+    Route::post('/admin/payments/{payment}/update-status', 'AdminPaymentController@updateStatus')->name('admin.payments.updateStatus');
+});
+
 Route::resource('notifications', NotificationController::class)->middleware('auth', 'can:manage-products')->except('show')->name('notifications', 'notifications.index');
 //notifications.show
 Route::get('/notifications/{notification}', [NotificationController::class, 'show'])->name('notifications.show')->middleware('auth');
@@ -75,8 +81,7 @@ Route::post('notifications/{notification}/mark-as-unread', [NotificationControll
     ->name('notifications.markAsUnread');
 
 
-
 Route::get('/check', [WiseController::class, 'getAllBalances']);
 
-require __DIR__.'/auth.php';
-require __DIR__.'/paypal.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/paypal.php';

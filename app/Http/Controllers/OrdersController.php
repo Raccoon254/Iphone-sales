@@ -62,6 +62,7 @@ class OrdersController extends Controller
             'delivery_date' => null,
             'items' => json_decode($request->input('items'), true),
         ]);
+        $order->createPayment();
 
         // Notify the user
         $user = auth()->user();

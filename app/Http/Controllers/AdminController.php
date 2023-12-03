@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\User;
 use App\Notifications\OrderStatusUpdatedNotification;
 use Illuminate\Contracts\View\Factory;
@@ -62,5 +63,17 @@ class AdminController extends Controller
         //redirect the user back and show flash message
         return redirect()->back()->with('success', 'Order status updated successfully.');
     }
+
+    public function updatePaymentStatus(Request $request, $paymentId): \Illuminate\Http\RedirectResponse
+    {
+        $payment = Payment::findOrFail($paymentId);
+        $payment->status = $request->input('status');
+        $payment->save();
+
+        //send notification to the user
+
+        return redirect()->back()->with('success', 'Payment status updated successfully.');
+    }
+
 
 }
