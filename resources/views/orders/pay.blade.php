@@ -50,16 +50,16 @@
             @endif
 
             <!--Form to submit payment proof-->
-            <form class="max-w-xs w-full flex flex-col justify-center gap-1"
+            <form class="max-w-xs mt-3 w-full flex flex-col justify-center gap-1"
                   action="{{ route('payments.update', $payment->id) }}"
                   method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Payment Proof -->
                 <div class="mb-4">
-                    <label for="proof" class="block font-medium">Payment Proof</label>
+                    <label for="proof" class="block text-center text-2xl my-2 font-semibold">Payment Proof</label>
                     <input type="file" class="file-input file-input-bordered w-full max-w-xs" id="proof" name="proof"
-                           required>
+                           required accept="image/*">
                 </div>
 
                 <!-- Order ID -->
