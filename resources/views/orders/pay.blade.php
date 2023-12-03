@@ -51,7 +51,7 @@
 
             <!--Form to submit payment proof-->
             <form class="max-w-xs mt-3 w-full flex flex-col justify-center gap-1"
-                  action="{{ route('payments.update', $payment->id) }}"
+                  action="{{ route('payment-proof.store', $payment->id) }}"
                   method="POST" enctype="multipart/form-data">
                 @csrf
 

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\User;
 use App\Notifications\OrderCreatedAdminNotification;
 use App\Notifications\OrderCreatedUserNotification;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -22,7 +24,44 @@ class OrdersController extends Controller
     }
 
     //store
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+
+    public function show(Order $order): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        return view('orders.show', compact('order'));
+    }
+
+    //show
+
+    public function all(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $orders = Order::where('user_id', auth()->user()->id)
+            ->orderBy('id', 'DESC')
+            ->paginate(10);
+
+        return view('orders.all', compact('orders'));
+    }
+
+    public function pay($paymentId): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    {
+        $payment = auth()->user()->payments()->findOrFail($paymentId);
+        return view('orders.pay', compact('payment'));
+    }
+
+    public function storeProof(Request $request, $paymentId): RedirectResponse
+    {
+        $request->validate(['proof' => 'required|file']);
+
+        $payment = Payment::findOrFail($paymentId);
+        $filePath = $request->file('proof')->store('payment_proofs', 'public');
+
+        $payment->paymentProof()->create(['file_path' => $filePath]);
+
+        return back()->with('success', 'Payment proof uploaded successfully.');
+    }
+
+    //pay
+
+    public function store(Request $request): RedirectResponse
     {
         // Validate the form data
         $request->validate([
@@ -98,8 +137,6 @@ class OrdersController extends Controller
 
     }
 
-    //show
-
     private function generate_order_number(): string
     {
         $order_number = Str::upper(Str::random(4) . time());
@@ -108,27 +145,6 @@ class OrdersController extends Controller
             return $this->generate_order_number();
         }
         return $order_number;
-    }
-
-    public function show(Order $order): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
-    {
-        return view('orders.show', compact('order'));
-    }
-
-    public function all(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
-    {
-        $orders = Order::where('user_id', auth()->user()->id)
-            ->orderBy('id', 'DESC')
-            ->paginate(10);
-
-        return view('orders.all', compact('orders'));
-    }
-
-    //pay
-    public function pay($paymentId): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
-    {
-        $payment = auth()->user()->payments()->findOrFail($paymentId);
-        return view('orders.pay', compact('payment'));
     }
 
 }
