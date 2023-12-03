@@ -83,7 +83,8 @@ Route::get('/t', [NotificationController::class, 'test'])->name('test-n')->middl
 Route::get('/notifications/user/all', [NotificationController::class, 'forUser'])->name('notifications.user')->middleware('auth');
 Route::post('notifications/{notification}/mark-as-unread', [NotificationController::class, 'markAsUnread'])
     ->name('notifications.markAsUnread');
-
+//payments.update
+Route::post('/payments/{payment}/update', [OrdersController::class, 'updatePaymentStatus'])->name('payments.update')->middleware('auth');
 
 Route::get('/check', [WiseController::class, 'getAllBalances']);
 

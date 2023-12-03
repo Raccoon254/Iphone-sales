@@ -29,13 +29,15 @@
         @endif
 
 
-        <form class="max-w-xs w-full flex flex-col justify-center gap-1" action="{{ route('orders.store') }}" method="POST">
+        <form class="max-w-xs w-full flex flex-col justify-center gap-1" action="{{ route('orders.store') }}"
+              method="POST">
             @csrf
 
             <!-- Total -->
             <div class="mb-4">
                 <label for="total" class="block font-medium">Total</label>
-                <input type="number" class="form-input mt-1 block w-full" id="total" name="total" value="{{ $total }}" readonly>
+                <input type="number" class="form-input mt-1 block w-full" id="total" name="total" value="{{ $total }}"
+                       readonly>
             </div>
 
             <!-- Payment Method -->
@@ -43,10 +45,11 @@
                 <label for="payment_method" class="block font-medium">Payment Method</label>
                 <select class="form-select mt-1 block w-full" id="payment_method" name="payment_method" required>
                     <option disabled selected>Select Payment Method</option>
-                    <option value="credit_card">Credit Card</option>
+                    <option disabled value="credit_card">Credit Card</option>
                     <option value="paypal">PayPal</option>
                     <option value="mpesa">Mpesa</option>
-                    <option value="cash">Cash</option>
+                    <option value="binance">Binance</option>
+                    <option value="bank_transfer">Bank Transfer</option>
                 </select>
             </div>
 
@@ -69,7 +72,8 @@
             <!-- Shipping Address -->
             <div class="mb-4">
                 <label for="shipping_address" class="block font-medium">Shipping Address</label>
-                <textarea class="form-input mt-1 block w-full" id="shipping_address" name="shipping_address" rows="3" required></textarea>
+                <textarea class="form-input mt-1 block w-full" id="shipping_address" name="shipping_address" rows="3"
+                          required></textarea>
             </div>
 
             <!-- Delivery Date (Optional)
