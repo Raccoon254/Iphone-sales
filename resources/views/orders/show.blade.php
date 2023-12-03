@@ -1,5 +1,22 @@
 <x-app-layout>
     <div class="container mx-auto px-4 py-8">
+
+        <div>
+            @if($order->payment->status == 'pending')
+                <div role="alert" class="alert rounded my-2 alert-error">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>
+                        This order is pending payment verification.
+                    </span>
+                </div>
+            @endif
+
+        </div>
+
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
             <div class="px-4 py-5 border-b flex justify-between border-gray-200 sm:px-6">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
