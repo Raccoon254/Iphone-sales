@@ -55,8 +55,10 @@ class OrdersController extends Controller
         $filePath = $request->file('proof')->store('payment_proofs', 'public');
 
         $payment->paymentProof()->create(['file_path' => $filePath]);
+        $order = $payment->order;
 
-        return back()->with('success', 'Payment proof uploaded successfully.');
+        return redirect()->route('orders.show', $order->id)
+            ->with('success', 'Payment proof uploaded successfully!');
     }
 
     //pay
