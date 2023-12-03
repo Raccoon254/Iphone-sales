@@ -15,6 +15,7 @@
                 <select name="status" id="status">
                     <option value="pending" {{ $payment->status == 'pending' ? 'selected' : '' }}>Pending</option>
                     <option value="verified" {{ $payment->status == 'verified' ? 'selected' : '' }}>Verified</option>
+                    <option value="failed" {{ $payment->status == 'failed' ? 'selected' : '' }}>Failed</option>
                 </select>
 
                 <button type="submit">Update Status</button>
