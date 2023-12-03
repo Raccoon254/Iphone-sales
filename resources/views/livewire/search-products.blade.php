@@ -1,4 +1,4 @@
-<div>
+<div class="container mx-auto w-full">
     <section class="Raccoon Search m-3 w-full flex justify-end">
         <div class="w-full sm:w-1/4 mx-4">
             <label class="relative">

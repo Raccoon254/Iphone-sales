@@ -46,6 +46,7 @@ class OrdersController extends Controller
         }
 
         // Create a new order
+        /** @var Order $order */
         $order = Order::create([
             'user_id' => auth()->user()->id,
             'order_number' => $this->generate_order_number(),
@@ -65,7 +66,7 @@ class OrdersController extends Controller
 
         // Notify the user
         $user = auth()->user();
-        $user->notify(new OrderCreatedUserNotification($order, session('cart'), $total));
+        //$total = $request->input('total');
 
         // Notify admins
         $admins = User::where('role', 'admin')->get();
@@ -76,6 +77,7 @@ class OrdersController extends Controller
         foreach (session('cart') as $id => $details) {
             $total += $details['price'] * $details['quantity'];
         }
+        $user->notify(new OrderCreatedUserNotification($order, session('cart'), $total));
 
         // Ensure the order total and cart total match
         if ($order->grand_total != $total) {

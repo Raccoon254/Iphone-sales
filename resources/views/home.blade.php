@@ -123,9 +123,7 @@
         <div class="products">
 
             <div class="container w-full p-2 sm:p-8">
-                <div>
                     @livewire('search-products')
-                </div>
             </div>
 
         </div>
