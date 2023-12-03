@@ -25,8 +25,7 @@
 
 <div
     class="relative sm:flex sm:justify-center sm:items-center bg-dots-darker bg-center dark:bg-dots-lighter mt-8 selection:bg-red-500 selection:text-white">
-    {{--{{$mainBanner}}--}}
-    {{--{{$trBanner}}--}}
+
     <div class="overflow-clip sm:h-[500px] md:h-[600px] flex flex-col mx-auto p-2 lg:p-8">
 
 
@@ -41,11 +40,10 @@
                          alt="" decoding="async" sizes="(max-width: 887px) 100vw, 887px"
                          srcset="{{ $mainBanner->image_url }}" data-ll-status="loaded">
                 @else
-                    <img src="{{ asset('images/left_banner-1.jpg') }}">
+                    <img src="{{ asset('images/left_banner-1.jpg') }}" alt="">
                 @endif
 
-
-                <section class="absolute sm:top-[65%] top-[50%] m-2 sm:m-4 right-[65%] sm:right-[75%] top-[50%]">
+                <section class="absolute sm:top-[65%] m-2 sm:m-4 right-[65%] sm:right-[75%] top-[50%]">
                     <h2 class="sm:text-2xl text-xs bg-blend-hard-light font-bold my-1 text-white hover:text-base-900">
                         @if(isset($mainBanner->title))
                             {{ $mainBanner->title }}
